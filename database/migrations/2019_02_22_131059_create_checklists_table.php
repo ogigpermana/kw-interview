@@ -13,8 +13,18 @@ class CreateChecklistsTable extends Migration
      */
     public function up()
     {
-        Schema::table('checklists', function (Blueprint $table) {
-            //
+        Schema::create('checklists', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('object_domain');
+            $table->string('object_id');
+            $table->string('description');
+            $table->boolean('is_completed')->default(false);
+            $table->timestamp('completed_at')->nullable();
+            $table->string('updated_by');
+            $table->timestamp('updated_at')->nullable();
+            $table->string('created_at');
+            $table->timestamp('due')->nullable();
+            $table->integer('urgency');
         });
     }
 
@@ -25,8 +35,6 @@ class CreateChecklistsTable extends Migration
      */
     public function down()
     {
-        Schema::table('checklists', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('checklists');
     }
 }
