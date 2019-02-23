@@ -10,11 +10,12 @@ class Checklist extends Model
     protected $filllable = [
         'object_domain',
         'object_id',
-        'description'
+        'description',
+        'updated_by'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

@@ -20,8 +20,12 @@ class CreateItemsTable extends Migration
             $table->timestamp('completed_at')->nullable();
             $table->timestamp('due')->nullable();
             $table->integer('urgency')->nullable();
-            $table->timestamp('updated_by')->nullable();
-            $table->string('created_at');
+            $table->integer('updated_by')->unsigned();
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::table('items', function($table) {
+            $table->foreign('updated_by')->references('id')->on('users');
         });
     }
 

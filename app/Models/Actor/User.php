@@ -3,6 +3,7 @@
 namespace App\Models\Actor;
 
 use App\Models\Kw\Item;
+use App\Models\Kw\Checklist;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'name', 'email', 'password', 
     ];
 
     /**
@@ -28,11 +29,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'remember_token',
     ];
 
     public function items()
     {
-        return $this->hasMany(Item::class, 'user_id');
+        return $this->hasMany(Item::class, 'updated_by');
+    }
+
+    public function checklist()
+    {
+        return $this->belongsTo(Checklist::class, 'updated_by');
     }
 }

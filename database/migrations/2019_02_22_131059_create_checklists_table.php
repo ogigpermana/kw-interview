@@ -20,11 +20,15 @@ class CreateChecklistsTable extends Migration
             $table->string('description');
             $table->boolean('is_completed')->default(false);
             $table->timestamp('completed_at')->nullable();
-            $table->string('updated_by');
+            $table->integer('updated_by')->unsigned();
             $table->timestamp('updated_at')->nullable();
             $table->string('created_at');
             $table->timestamp('due')->nullable();
             $table->integer('urgency');
+        });
+
+        Schema::table('checklists', function($table) {
+            $table->foreign('updated_by')->references('id')->on('users');
         });
     }
 
