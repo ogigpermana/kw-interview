@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Actor;
 
+use App\Models\Kw\Item;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -29,4 +30,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(Item::class, 'user_id');
+    }
 }
