@@ -11,11 +11,30 @@ class Checklist extends Model
         'object_domain',
         'object_id',
         'description',
-        'updated_by'
+        'is_completed',
+        'completed_at',
+        'updated_by',
+        'updated_at',
+        'created_at',
+        'due',
+        'urgency'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+
+     // Scope untuk memfilter tulisan
+     public function ScopeFilter($query, $filter)
+     {
+         // Make sure any sort entered
+         if(isset($filter['sort']) && $sort = $filter['sort'])
+         {
+            $query->where(function($q) use ($sort){
+             $q->orWhere('urgency', 'LIKE', "%{$sort}%");
+             $q->orWhere('-urgency', 'LIKE', "%{$sort}%", 'DESC');
+            });
+         }
+     }
 }
