@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Actor;
 
 use App\Models\Actor\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -21,27 +21,15 @@ class UserController extends Controller
         return response()->json(User::find($id));
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    public function create(Request $request)
     {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6'
         ]);
-    }
 
-    public function create(Request $request, $data)
-    {
-        $data = $request->all();
-        $data['password'] = bcrypt($data['password']);
-
-        $user = User::create($data);
+        $user = User::create($request->all());
 
         return response()->json($user, 201);
     }
